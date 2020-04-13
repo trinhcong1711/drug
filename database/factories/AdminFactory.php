@@ -18,7 +18,7 @@ $factory->define(Admin::class, function (Faker $faker) {
         'zalo' => $faker->url,
         'email_verified_at' => now(),
         'api_token' => Str::random(10),
-        'password' => 'admin123', // password
+        'password' => bcrypt('admin123'), // password
         'remember_token' => Str::random(10),
         'created_at' => new DateTime,
         'updated_at' => new DateTime,
