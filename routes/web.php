@@ -17,12 +17,14 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth'],'namespace' => 'Backend'], function() {
 
-    Route::resource('roles','Backend\RoleController');
+    Route::resource('roles','RoleController');
 
-    Route::resource('admins','Backend\AdminController');
+    Route::resource('admins','AdminController');
 
-    Route::resource('medicines','Backend\MedicineController');
+    Route::resource('medicines','MedicineController');
+
+    Route::resource('units','UnitController');
 
 });

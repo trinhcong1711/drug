@@ -4,12 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
-use Spatie\Permission\Models\Role;
-use DB;
-use Hash;
 
-class AdminController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -45,19 +41,13 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:admins,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+//            'name' => 'required',
+//            'email' => 'required|email|unique:admins,email',
+//            'password' => 'required|same:confirm-password',
+//            'roles' => 'required'
         ]);
 
 
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
-        unset($input['roles']);
-        unset($input['confirm-password']);
-        $admin = Admin::create($input);
-        $admin->assignRole($request->input('roles'));
 
 
         return redirect()->route('admins.index')
