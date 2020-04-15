@@ -26,5 +26,8 @@ Route::group(['middleware' => ['auth'],'namespace' => 'Backend'], function() {
     Route::resource('medicines','MedicineController');
 
     Route::resource('units','UnitController');
+    Route::get('dashboard',function (){
+        return view('backend.index');
+    });
 
 });
