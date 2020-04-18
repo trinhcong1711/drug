@@ -12,12 +12,22 @@
     <div class="m-grid m-grid--hor m-grid--root m-page">
 
         <!-- BEGIN: Header -->
-        @include('backend.masters.body.header.header')
-        <!-- END: Header -->
+    @include('backend.masters.body.header.header')
+    <!-- END: Header -->
+        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
 
-        <!-- begin::Content -->
-        @include('backend.masters.body.content.master.content')
-        <!-- end:: Content -->
+            <!-- BEGIN: Left Aside -->
+            @include('backend.masters.body.sidebar_left.left_aside')
+            <!-- END: Left Aside -->
+
+
+            <!-- begin::Content -->
+            @yield('content')
+            <!-- end:: Content -->
+
+
+        </div>
+
 
         <!-- begin::Footer -->
         @include('backend.masters.body.footer.footer')
@@ -40,8 +50,8 @@
 
     <!-- begin::Script Footer -->
     @include('backend.masters.head.script_footer')
-    <!-- begin::Script Footer -->
-
+    @yield('script_footer')
+    <!-- end:: Script Footer -->
 </body>
 
 <!-- end::Body -->

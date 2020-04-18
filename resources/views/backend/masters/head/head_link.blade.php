@@ -1,5 +1,4 @@
 <!--begin::Global Theme Styles -->
-<link href="assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css"/>
 <link href="{{asset('metronic/assets/vendors/base/vendors.bundle.css')}}" rel="stylesheet" type="text/css"/>
 
 <!--RTL version:<link href="assets/vendors/base/vendors.bundle.rtl.css" rel="stylesheet" type="text/css" />-->

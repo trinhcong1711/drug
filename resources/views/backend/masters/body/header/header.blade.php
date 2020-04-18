@@ -16,7 +16,6 @@
 
                 <!-- BEGIN: Topbar -->
                 @include('backend.masters.body.header.topbar')
-
                 <!-- END: Topbar -->
             </div>
 

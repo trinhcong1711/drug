@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['middleware' => ['auth'],'namespace' => 'Backend'], function() {
+Route::group(['prefix' => 'admin','middleware' => ['auth'],'namespace' => 'Backend'], function() {
 
     Route::resource('roles','RoleController');
 
@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth'],'namespace' => 'Backend'], function() {
 
     Route::resource('units','UnitController');
     Route::get('dashboard',function (){
-        return view('backend.index');
+        return view('backend.layouts.sell.sell');
     });
 
 });
