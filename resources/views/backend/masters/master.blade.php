@@ -22,7 +22,7 @@
 
 
             <!-- begin::Content -->
-            @yield('content')
+            @yield('main')
             <!-- end:: Content -->
 
 

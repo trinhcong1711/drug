@@ -1,5 +1,5 @@
-@extends('backend.masters.index')
-@section('content')
+@extends('backend.masters.master')
+@section('main')
     <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
         <div class="m-content">
@@ -56,6 +56,30 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <tr>
+                                    <td>Panadol</td>
+                                    <td><input type="text" name="billing_card_name" class="form-control text-left  w-100 border-right-0 border-left-0 border-top-0" placeholder="Liều dùng..." value=""></td>
+                                    <td>Vỉ</td>
+                                    <td><input type="text" name="billing_card_name" class="text-left p-2 w-100 border-right-0 border-left-0 border-top-0" placeholder="0" value=""></td>
+                                    <td><input type="text" name="billing_card_name" class="text-left bg- p-2 w-100 border-right-0 border-left-0 border-top-0" placeholder="0" value=""></td>
+                                    <td>20.000</td>
+                                </tr>
+                                <tr>
+                                    <td>Panadol</td>
+                                    <td><input type="text" name="billing_card_name" class="form-control text-left  w-100 border-right-0 border-left-0 border-top-0" placeholder="Liều dùng..." value=""></td>
+                                    <td>Vỉ</td>
+                                    <td><input type="text" name="billing_card_name" class="text-left p-2 w-100 border-right-0 border-left-0 border-top-0" placeholder="0" value=""></td>
+                                    <td><input type="text" name="billing_card_name" class="text-left bg- p-2 w-100 border-right-0 border-left-0 border-top-0" placeholder="0" value=""></td>
+                                    <td>20.000</td>
+                                </tr>
+                                <tr>
+                                    <td>Panadol</td>
+                                    <td><input type="text" name="billing_card_name" class="form-control text-left  w-100 border-right-0 border-left-0 border-top-0" placeholder="Liều dùng..." value=""></td>
+                                    <td>Vỉ</td>
+                                    <td><input type="text" name="billing_card_name" class="text-left p-2 w-100 border-right-0 border-left-0 border-top-0" placeholder="0" value=""></td>
+                                    <td><input type="text" name="billing_card_name" class="text-left bg- p-2 w-100 border-right-0 border-left-0 border-top-0" placeholder="0" value=""></td>
+                                    <td>20.000</td>
+                                </tr>
                                 <tr>
                                     <td>Panadol</td>
                                     <td><input type="text" name="billing_card_name" class="form-control text-left  w-100 border-right-0 border-left-0 border-top-0" placeholder="Liều dùng..." value=""></td>

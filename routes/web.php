@@ -29,5 +29,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth'],'namespace' => 'Backe
     Route::get('dashboard',function (){
         return view('backend.layouts.sell.sell');
     });
+    Route::get('unit',function (){
+        return view('backend.layouts.sell.sell');
+    });
 
 });

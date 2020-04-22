@@ -1,0 +1,13 @@
+{
+    "name": "DrugUnit",
+    "alias": "drugunit",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\DrugUnit\\Providers\\DrugUnitServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
