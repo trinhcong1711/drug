@@ -14,6 +14,12 @@
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'unit'], function () {
-        Route::resource('', 'UnitController');
+        Route::get('', 'UnitController@getList')->name('unit.getList');
+        Route::get('add', 'UnitController@getAdd')->name('unit.getAdd');
+        Route::post('add', 'UnitController@postAdd')->name('unit.postAdd');
+        Route::get('edit/{id}', 'UnitController@getEdit')->name('unit.getEdit');
+        Route::post('edit/{id}', 'UnitController@postEdit')->name('unit.postEdit');
+        Route::get('delete/{id}', 'UnitController@getDelete')->name('unit.getDelete');
+        Route::get('multi-delete/{id}', 'UnitController@getMultiDelete')->name('unit.getMultiDelete');
     });
 });

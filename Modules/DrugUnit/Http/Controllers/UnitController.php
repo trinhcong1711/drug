@@ -8,71 +8,75 @@ use Illuminate\Routing\Controller;
 
 class UnitController extends Controller
 {
+    protected $title = 'Vị trí';
+    protected $url = 'unit';//Giống với route
+    protected $model = 'Modules\DrugUnit\Entities\Unit';
+
     /**
-     * Display a listing of the resource.
+     * Hiển thị danh sách bản ghi phù hợp
      * @return Response
      */
-    public function index()
+    public function getList()
     {
-        return view('drugunit::unit.index');
+        $data['items'] = $this->model::paginate(10);
+        return view('drugunit::unit.list',$data);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Giao diện thêm mới
      * @return Response
      */
-    public function create()
+    public function getAdd()
     {
-        return view('drugunit::unit.create');
+        return view('drugunit::unit.add');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Thêm mới 1 bản ghi
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function postAdd(Request $request)
     {
         //
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('drugunit::unit.show');
-    }
 
     /**
-     * Show the form for editing the specified resource.
+     * Hiển thị giao diện vủa 1 bản ghi muốn sửa
      * @param int $id
      * @return Response
      */
-    public function edit($id)
+    public function getEdit($id)
     {
         return view('drugunit::unit.edit');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Sửa một bản ghi
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function postEdit(Request $request, $id)
     {
         //
     }
 
     /**
-     * Remove the specified resource from storage.
+     * xóa 1 bản ghi
      * @param int $id
+     */
+    public function getDelete($id)
+    {
+        //
+    }
+    /**
+     *Xóa nhiều bản ghi
+     * @param text $id=1,2,3,4,5,...
      * @return Response
      */
-    public function destroy($id)
+    public function getMultiDelete($id)
     {
         //
     }
