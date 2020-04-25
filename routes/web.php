@@ -14,8 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
-Auth::routes();
+//Route::resource('unit', 'Backend\UnitsController');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin','middleware' => ['auth'],'namespace' => 'Backend'], function() {
 
@@ -25,12 +24,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth'],'namespace' => 'Backe
 
     Route::resource('medicines','MedicineController');
 
-    Route::resource('units','UnitController');
-    Route::get('dashboard',function (){
-        return view('backend.layouts.sell.sell');
-    });
-    Route::get('unit',function (){
-        return view('backend.layouts.sell.sell');
-    });
+    Route::resource('unit', 'UnitsController');
 
 });
