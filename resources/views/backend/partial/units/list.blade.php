@@ -18,7 +18,8 @@
                     </div>
                     <div class="m-portlet__head-tools">
                         <button type="button"
-                                class="btn btn-default btn-icon-sm dropdown-toggle btn-closed-search m--margin-right-10" id="toggle-search">
+                                class="btn btn-default btn-icon-sm dropdown-toggle btn-closed-search m--margin-right-10"
+                                id="toggle-search">
                             <i class="la la-search m--margin-right-10"></i> Tìm kiếm
                         </button>
                         <div class="dropdown  m--margin-right-10">
@@ -28,11 +29,11 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2" x-placement="bottom-start"
                                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                                <button class="dropdown-item" type="button"><i
+                                <button class=" btn dropdown-item" type="button"><i
                                         class="la la-download m--margin-right-10"></i>Xuất excel
                                 </button>
-                                <button class="dropdown-item" type="button"><i
-                                        class="la la-remove m--margin-right-10"></i>Xóa nhiều
+                                <button class="btn dropdown-item multi_destroy" onclick="multiDestroy();" type="button">
+                                    <i class="la la-remove m--margin-right-10"></i>Xóa nhiều
                                 </button>
                             </div>
                         </div>
@@ -97,8 +98,12 @@
                                     <table class="table m-table m-table--head-separator-primary text-dark table-hover">
                                         <thead>
                                         <tr class="m-stack__item--fluid po">
-                                            <th>#</th>
-                                            <th>Thao tác </th>
+                                            <th>
+                                                <label class="m-checkbox m-checkbox--solid">
+                                                    <input type="checkbox" class="ids_master"><span></span>
+                                                </label>
+                                            </th>
+                                            <th>Thao tác</th>
                                             <th>Vị trí</th>
                                             <th>Ghi chú</th>
                                         </tr>
@@ -106,13 +111,27 @@
                                         <tbody>
                                         @foreach($units as $k => $item)
                                             <tr>
-                                                <th scope="row">{{$k+1}}</th>
                                                 <th scope="row">
-                                                    <div class="m-btn-group m-btn-group--pill btn-group btn-group-sm" role="group" aria-label="First group">
-                                                        <a class="m-btn btn btn-secondary" href="{{asset('admin/unit/duplication/'.$item->id)}}" title="Nhân bản"><i class="flaticon-background"></i></a>
-                                                        <a class="m-btn btn btn-secondary" href="{{asset('admin/unit/'.$item->id.'/edit')}}" title="Sửa"><i class="flaticon-edit"></i></a>
-                                                        <a class="m-btn btn btn-secondary" href="{{asset('admin/unit/destroy'.$item->id)}}" title="Xóa"><i class="flaticon-delete"></i></a>
+                                                    <label class="m-checkbox m-checkbox--solid">
+                                                        <input name="id[]" type="checkbox" class="ids"
+                                                               value="{{ $item->id }}"><span></span>{{$k+1}}
+                                                    </label>
+                                                </th>
+                                                <th scope="row">
+                                                    <div class="m-btn-group m-btn-group--pill btn-group btn-group-sm"
+                                                         role="group" aria-label="First group">
+                                                        <a class="m-btn btn btn-secondary"
+                                                           href="{{ route('unit.duplication',$item->id)  }}"
+                                                           title="Nhân bản"><i class="flaticon-background"></i></a>
+                                                        <a class="m-btn btn btn-secondary"
+                                                           href="{{ route('unit.edit',$item->id) }}" title="Sửa"><i
+                                                                class="flaticon-edit"></i></a>
+                                                        <span class="m-btn btn btn-secondary delete_item"
+                                                              data-toggle="modal" data-target="#m_modal_{{$item->id}}"
+                                                              data-id="{{$item->id}}" title="Xóa"><i
+                                                                class="flaticon-delete"></i></span>
                                                     </div>
+                                                    @include('backend.partial.parts.modal_destroy')
                                                 </th>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->note }}</td>
@@ -121,6 +140,7 @@
 
                                         </tbody>
                                     </table>
+
                                     {{$units->render()}}
                                 </div>
                             </div>
@@ -132,12 +152,45 @@
             </div>
         </div>
     </div>
+
+
+
 @endsection
 @section('script_footer')
     <script>
+        function multiDestroy() {
+            var ids = [];
+            $('.ids:checkbox:checked').each(function (i) {
+                ids[i] = $(this).val();
+            });
+            if (ids.length == 0) {
+                alert('Bạn chưa chọn bản ghi nào để xóa!');
+            } else {
+                if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                    $.ajax({
+                        url: '{{route('unit.multi_destroy')}}',
+                        type: 'get',
+                        data: {
+                            ids: ids
+                        },
+                        success: function () {
+                                location.reload();
+                        },
+                        error: function () {
+                            alert('Có lỗi xảy ra. Vui lòng load lại website và thử lại!');
+                        }
+                    });
+                }
+            }
+        }
+
         $(document).ready(function () {
             $('#toggle-search').click(function () {
                 $('#form-search').slideToggle(500);
+            });
+            $('.ids_master').click(function () {
+                console.log(1)
+                $('table tbody tr th label input[type=checkbox]').trigger('click');
             });
         })
     </script>

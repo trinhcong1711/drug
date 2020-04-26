@@ -24,6 +24,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth'],'namespace' => 'Backe
 
     Route::resource('medicines','MedicineController');
 
-    Route::resource('unit', 'UnitsController');
+    Route::resource('unit', 'UnitsController')->except([
+        'show', 'destroy'
+    ]);;
+    Route::get('unit/duplication/{id}','UnitsController@duplication')->name('unit.duplication');
+    Route::get('unit/destroy/{id}','UnitsController@destroy')->name('unit.destroy');
+    Route::get('unit/multi-destroy','UnitsController@multiDestroy')->name('unit.multi_destroy');
 
 });

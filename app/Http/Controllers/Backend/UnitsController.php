@@ -21,7 +21,9 @@ class UnitsController extends Controller
     /*
      *
      */
-    protected $slug = 'unit';
+    protected $modules = [
+        'slug' => 'unit'
+        ];
     /**
      * @var UnitRepositoryEloquent
      */
@@ -86,7 +88,7 @@ class UnitsController extends Controller
             if ($request->return_redirect == 'save_new') {
                 return back()->with('success', $response['success']);
             }
-            return redirect('/admin/' . $this->slug)->with('success', $response['success']);
+            return redirect('/admin/' . $this->modules['slug'])->with('success', $response['success']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -131,7 +133,7 @@ class UnitsController extends Controller
             $unit = $this->repository->update($request->except('return_redirect'), $id);
 
             $response = [
-                'message' => 'Cập nhật vị trí thành công!',
+                'success' => 'Cập nhật vị trí thành công!',
                 'data' => $unit->toArray(),
             ];
 
@@ -139,10 +141,10 @@ class UnitsController extends Controller
 
                 return response()->json($response);
             }
-            if ($request->return_redirect == 'save_continue') {
-                return back()->with('success', $response['success']);
+            if ($request->return_redirect == 'save_back') {
+                return redirect('/admin/' . $this->modules['slug'])->with('success', $response['success']);
             }
-            return redirect()->back()->with('message', $response['message']);
+            return back()->with('success', $response['success']);
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {
@@ -167,16 +169,35 @@ class UnitsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
 
+        $deleted = $this->repository->delete($id);
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'Xóa thành công.',
+                'success' => 'Xóa thành công!',
                 'deleted' => $deleted,
             ]);
         }
+        return redirect()->back()->with('success', 'Xóa thành công!');
+    }
 
-        return redirect()->back()->with('message', 'Unit deleted.');
+    /**
+     * Remove multiple the specified resource from storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function multiDestroy(Request $request)
+    {
+        $ids = $request->ids;
+        $destroyed = $this->repository->model()::destroy($ids);
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'success' => 'Xóa thành công!',
+                'deleted' => $destroyed,
+            ]);
+        }
+        return redirect()->back()->with('success', 'Xóa thành công!');
     }
 }

@@ -40,7 +40,7 @@
                                                     class="btn btn-primary dropdown-toggle dropdown-toggle-split"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-right save_option"  data-action="save_continue" x-placement="bottom-start" style="cursor: pointer">
+                                            <div class="dropdown-menu dropdown-menu-right save_option"  data-action="save_back" x-placement="bottom-start" style="cursor: pointer">
                                                 <a class="dropdown-item" title="Lưu và tiếp tục tạo mới">
                                                     <i class="la la-plus m--margin-right-10"></i> Lưu & tiếp tục
                                                 </a>
