@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Units\UnitCreateRequest;
 use App\Http\Requests\Units\UnitUpdateRequest;
@@ -18,16 +17,10 @@ use App\Repositories\Units\UnitRepositoryEloquent;
  */
 class UnitsController extends Controller
 {
-    /*
-     *
-     */
-    protected $modules = [
-        'slug' => 'unit'
-        ];
+    protected $repository;
     /**
      * @var UnitRepositoryEloquent
      */
-    protected $repository;
 
     /**
      * UnitsController constructor.
@@ -42,21 +35,21 @@ class UnitsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index()
+    public function index(Request $request)
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $units = $this->repository->orderBy('id', 'desc')->paginate(15);
-
+        $data['items'] = $this->repository->getIndex($this->repository->filters(), $request)->orderBy('id','desc')->paginate(15);
+        $data['filters'] = $this->repository->getFilters();
         if (request()->wantsJson()) {
-
             return response()->json([
-                'data' => $units,
+                'data' => $data['units'],
             ]);
         }
 
-        return view('backend.partial.units.list', compact('units'));
+        return view('backend.partial.units.list', $data);
     }
 
     public function create()
@@ -169,7 +162,7 @@ class UnitsController extends Controller
      */
     public function destroy($id)
     {
-
+$this->repository->
         $deleted = $this->repository->delete($id);
         if (request()->wantsJson()) {
 

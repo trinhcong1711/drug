@@ -2,36 +2,42 @@
 
 namespace App\Repositories\Units;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Units\UnitRepository;
+use App\Repositories\CURDBaseRepositoryEloquent;
 use App\Models\Unit;
-use Prettus\Repository\Events\RepositoryEntityCreated;
-use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class UnitRepositoryEloquent.
  *
  * @package namespace App\Repositories\Units;
  */
-class UnitRepositoryEloquent extends BaseRepository implements UnitRepository
+class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitRepository
 {
-    /**
-     * Specify Model class name
-     *
-     * @return string
-     */
+    protected $modules = [
+        'slug' => 'unit'
+    ];
+    protected $filters = [
+        'name' => [
+            'label' => 'Tên vị trí',
+            'type' => 'text',
+            'class' => 'col-md-2',
+            'query' => 'like'
+        ],
+        'note' => [
+            'label' => 'Ghi chú',
+            'type' => 'text',
+            'query' => 'like'
+        ],
+    ];
+    public function modules()
+    {
+        return $this->modules;
+    }
+    public function getFilters()
+    {
+        return $this->filters;
+    }
     public function model()
     {
         return Unit::class;
     }
-
-    /**
-     * Boot up the repository, pushing criteria
-     */
-    public function boot()
-    {
-        $this->pushCriteria(app(RequestCriteria::class));
-    }
-
 }

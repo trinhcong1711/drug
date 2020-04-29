@@ -24,5 +24,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind(\App\Repositories\Units\UnitRepository::class, \App\Repositories\Units\UnitRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\CURDBaseRepository::class, \App\Repositories\CURDBaseRepositoryEloquent::class);
     }
 }

@@ -1,5 +1,4 @@
 @extends('backend.masters.master')
-
 @section('main')
     <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
@@ -48,40 +47,24 @@
                             <!--begin: Search Form -->
                             <form action="" method="get" id="form-search" style="display:none;">
                                 <div class="m-form__group row">
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="email" class="form-control m-input" placeholder="Enter full name">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="email" class="form-control m-input" placeholder="Enter email">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="text" class="form-control m-input" placeholder="">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="text" class="form-control m-input" placeholder="">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="text" class="form-control m-input" placeholder="">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="text" class="form-control m-input" placeholder="">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="text" class="form-control m-input" placeholder="">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="text" class="form-control m-input" placeholder="">
-                                    </div>
-                                    <div class="col-lg-2 mb-2">
-                                        <input type="text" class="form-control m-input" placeholder="">
-                                    </div>
+                                    @if(isset($filters))
+                                        @foreach($filters as $name=>$filter)
+                                            <div class="{{ isset($filter['class']) ? $filter['class'] : 'col-md-2' }} mb-2">
+                                                <input type="{{ isset($filter['type']) ? $filter['type'] : 'text' }}" name="{{ $name }}"
+                                                       value="{{ isset($_GET[$name])?$_GET[$name]:'' }}"
+                                                       class="form-control m-input"
+                                                       placeholder="{{ isset($filter['label']) ? $filter['label'] : '' }}">
+                                            </div>
+                                        @endforeach
+                                    @endif
 
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
+
+                                    <div class="col-lg-1 mb-2">
                                         <button type="submit" class="btn btn-primary m--margin-right-10"><i
                                                 class="flaticon-search-magnifier-interface-symbol m--margin-right-10"></i>Tìm
                                         </button>
+                                    </div>
+                                    <div class="col-lg-1 mb-2">
                                         <button type="reset" class="btn btn-secondary"><i
                                                 class="flaticon-refresh m--margin-right-10"></i>Làm mới
                                         </button>
@@ -109,7 +92,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($units as $k => $item)
+                                        @foreach($items as $k => $item)
                                             <tr>
                                                 <th scope="row">
                                                     <label class="m-checkbox m-checkbox--solid">
@@ -174,7 +157,7 @@
                             ids: ids
                         },
                         success: function () {
-                                location.reload();
+                            location.reload();
                         },
                         error: function () {
                             alert('Có lỗi xảy ra. Vui lòng load lại website và thử lại!');
@@ -182,6 +165,23 @@
                     });
                 }
             }
+        }
+
+        function filter(input) {
+            var value = $(input).val();
+            $.ajax({
+                url: '{{route('unit.multi_destroy')}}',
+                type: 'get',
+                data: {
+                    ids: ids
+                },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra. Vui lòng load lại website và thử lại!');
+                }
+            });
         }
 
         $(document).ready(function () {
