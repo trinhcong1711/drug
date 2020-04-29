@@ -45,16 +45,12 @@
                     <div class="row">
                         <div class="col-12">
                             <!--begin: Search Form -->
-                            <form action="" method="get" id="form-search" style="display:none;">
+                            <form action="" method="get" id="form-search" style="{{ empty($_GET) ? 'display:none;' : ''}}">
                                 <div class="m-form__group row">
+
                                     @if(isset($filters))
                                         @foreach($filters as $name=>$filter)
-                                            <div class="{{ isset($filter['class']) ? $filter['class'] : 'col-md-2' }} mb-2">
-                                                <input type="{{ isset($filter['type']) ? $filter['type'] : 'text' }}" name="{{ $name }}"
-                                                       value="{{ isset($_GET[$name])?$_GET[$name]:'' }}"
-                                                       class="form-control m-input"
-                                                       placeholder="{{ isset($filter['label']) ? $filter['label'] : '' }}">
-                                            </div>
+                                            @include('backend.filters.input')
                                         @endforeach
                                     @endif
 
@@ -124,7 +120,7 @@
                                         </tbody>
                                     </table>
 
-                                    {{$units->render()}}
+                                    {{$items->render()}}
                                 </div>
                             </div>
 

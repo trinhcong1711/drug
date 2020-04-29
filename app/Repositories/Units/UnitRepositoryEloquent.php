@@ -18,14 +18,25 @@ class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitR
     protected $filters = [
         'name' => [
             'label' => 'Tên vị trí',
+            'input' => 'input',
             'type' => 'text',
             'class' => 'col-md-2',
             'query' => 'like'
         ],
         'note' => [
             'label' => 'Ghi chú',
+            'input' => 'input',
             'type' => 'text',
             'query' => 'like'
+        ],
+        'select' => [
+            'label' => 'Select',
+            'input' => 'select',
+            'option' => [
+                0 => 'Tắt',
+                1 => 'Bật',
+            ],
+            'query' => '='
         ],
     ];
     public function modules()

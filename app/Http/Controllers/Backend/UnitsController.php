@@ -41,7 +41,7 @@ class UnitsController extends Controller
      */
     public function index(Request $request)
     {
-        $data['items'] = $this->repository->getIndex($this->repository->filters(), $request)->orderBy('id','desc')->paginate(15);
+        $data['items'] = $this->repository->getIndex($this->repository->getFilters(), $request)->orderBy('id','desc')->paginate(15);
         $data['filters'] = $this->repository->getFilters();
         if (request()->wantsJson()) {
             return response()->json([
