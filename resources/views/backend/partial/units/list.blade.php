@@ -36,7 +36,8 @@
                                 </button>
                             </div>
                         </div>
-                        <a href="{{asset('admin/unit/create')}}" class="btn btn-primary btn-elevate btn-icon-sm">
+                        <a href="{{asset('admin/'.$modules['slug'].'/create')}}"
+                           class="btn btn-primary btn-elevate btn-icon-sm">
                             <i class="la la-plus m--margin-right-10"></i> Tạo mới
                         </a>
                     </div>
@@ -45,16 +46,16 @@
                     <div class="row">
                         <div class="col-12">
                             <!--begin: Search Form -->
-                            <form action="" method="get" id="form-search" style="{{ empty($_GET) ? 'display:none;' : ''}}">
+                            <form action="" method="get" id="form-search"
+                                  style="{{ empty($_GET) ? 'display:none;' : ''}}">
                                 <div class="m-form__group row">
 
+                                    {{--begin: Bộ lọc--}}
                                     @if(isset($filters))
                                         @foreach($filters as $name=>$filter)
-                                            @include('backend.filters.input')
+                                            @include('backend.filters.text')
                                         @endforeach
                                     @endif
-
-
                                     <div class="col-lg-1 mb-2">
                                         <button type="submit" class="btn btn-primary m--margin-right-10"><i
                                                 class="flaticon-search-magnifier-interface-symbol m--margin-right-10"></i>Tìm
@@ -65,62 +66,73 @@
                                                 class="flaticon-refresh m--margin-right-10"></i>Làm mới
                                         </button>
                                     </div>
+                                    {{--end: Bộ lọc--}}
 
                                 </div>
                             </form>
-
                             <!--end: Search Form -->
 
                             <!--begin: List Product -->
                             <div class="row">
                                 <div class="table-responsive">
-                                    <table class="table m-table m-table--head-separator-primary text-dark table-hover">
+                                    <table class="table m-table m-table--head-separator-primary text-dark table-hover d-table-list" id="d-table-list">
                                         <thead>
-                                        <tr class="m-stack__item--fluid po">
-                                            <th>
+                                        <tr class="m-stack__item--fluid">
+                                            <th class="d-primary-row"  onclick="sortTable({{0}})">
                                                 <label class="m-checkbox m-checkbox--solid">
                                                     <input type="checkbox" class="ids_master"><span></span>
-                                                </label>
+                                                </label>#
                                             </th>
-                                            <th>Thao tác</th>
-                                            <th>Vị trí</th>
-                                            <th>Ghi chú</th>
+                                            <th class="d-primary-row">Hành động</th>
+
+                                            @if(isset($listColumns))
+                                                @foreach($listColumns as $r=>$listColumn)
+                                                    <th onclick="sortTable({{$r+1}})"
+                                                        class="{{ $listColumn['name'] }} d-primary-row {{ @$listColumn['class'] }}">{{ $listColumn['label'] }}
+                                                        <i class="la la-arrow-down fa-1x"></i></th>
+                                                @endforeach
+                                            @endif
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($items as $k => $item)
+                                        @foreach($listItems as $k => $listItem)
                                             <tr>
-                                                <th scope="row">
+                                                <th scope="row" class="d-row-sort">
                                                     <label class="m-checkbox m-checkbox--solid">
                                                         <input name="id[]" type="checkbox" class="ids"
-                                                               value="{{ $item->id }}"><span></span>{{$k+1}}
+                                                               value="{{ $listItem->id }}"><span></span>{{$k+1}}
                                                     </label>
                                                 </th>
                                                 <th scope="row">
                                                     <div class="m-btn-group m-btn-group--pill btn-group btn-group-sm"
                                                          role="group" aria-label="First group">
                                                         <a class="m-btn btn btn-secondary"
-                                                           href="{{ route('unit.duplication',$item->id)  }}"
+                                                           href="{{ route($modules['slug'].'.duplication',$listItem->id)  }}"
                                                            title="Nhân bản"><i class="flaticon-background"></i></a>
                                                         <a class="m-btn btn btn-secondary"
-                                                           href="{{ route('unit.edit',$item->id) }}" title="Sửa"><i
+                                                           href="{{ route($modules['slug'].'.edit',$listItem->id) }}"
+                                                           title="Sửa"><i
                                                                 class="flaticon-edit"></i></a>
                                                         <span class="m-btn btn btn-secondary delete_item"
-                                                              data-toggle="modal" data-target="#m_modal_{{$item->id}}"
-                                                              data-id="{{$item->id}}" title="Xóa"><i
+                                                              data-toggle="modal"
+                                                              data-target="#m_modal_{{$listItem->id}}"
+                                                              data-id="{{$listItem->id}}" title="Xóa"><i
                                                                 class="flaticon-delete"></i></span>
                                                     </div>
                                                     @include('backend.partial.parts.modal_destroy')
                                                 </th>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->note }}</td>
+                                                @if(isset($listColumns))
+                                                    @foreach($listColumns as $listColumn)
+                                                        @include('backend.lists.cols.'.$listColumn['type'] )
+                                                    @endforeach
+                                                @endif
                                             </tr>
                                         @endforeach
 
                                         </tbody>
                                     </table>
 
-                                    {{$items->render()}}
+                                    {{$listItems->render()}}
                                 </div>
                             </div>
 
@@ -147,7 +159,7 @@
             } else {
                 if (confirm('Bạn có chắc chắn muốn xóa?')) {
                     $.ajax({
-                        url: '{{route('unit.multi_destroy')}}',
+                        url: '{{route($modules['slug'].'.multi_destroy')}}',
                         type: 'get',
                         data: {
                             ids: ids
@@ -163,29 +175,11 @@
             }
         }
 
-        function filter(input) {
-            var value = $(input).val();
-            $.ajax({
-                url: '{{route('unit.multi_destroy')}}',
-                type: 'get',
-                data: {
-                    ids: ids
-                },
-                success: function () {
-                    location.reload();
-                },
-                error: function () {
-                    alert('Có lỗi xảy ra. Vui lòng load lại website và thử lại!');
-                }
-            });
-        }
-
         $(document).ready(function () {
             $('#toggle-search').click(function () {
                 $('#form-search').slideToggle(500);
             });
             $('.ids_master').click(function () {
-                console.log(1)
                 $('table tbody tr th label input[type=checkbox]').trigger('click');
             });
         })

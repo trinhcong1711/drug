@@ -15,3 +15,4 @@
 
 <!--end::Page Vendors Styles -->
 <link rel="shortcut icon" href="{{asset('metronic/assets/demo/default/media/img/logo/favicon.ico')}}"/>
+<link rel="stylesheet" href="{{asset('metronic/css/custom.css')}}">

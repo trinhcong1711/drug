@@ -8,5 +8,5 @@
         }
     });
 </script>
-
+<script src="{{asset('metronic/js/custom.js')}}"></script>
 <!--end::Web font -->

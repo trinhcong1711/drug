@@ -1,4 +1,4 @@
-<div class="modal fade" id="m_modal_{{@$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="m_modal_{{@$listItem->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,7 +13,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                <a type="button" href="{{ route('unit.destroy',@$item->id) }}" class="btn btn-primary">Xóa ngay!</a>
+                <a type="button" href="{{ route($modules['slug'].'.destroy',@$listItem->id) }}" class="btn btn-primary">Xóa ngay!</a>
             </div>
         </div>
     </div>

@@ -17,11 +17,11 @@ use App\Repositories\Units\UnitRepositoryEloquent;
  */
 class UnitsController extends Controller
 {
-    protected $repository;
+
     /**
      * @var UnitRepositoryEloquent
      */
-
+    protected $repository;
     /**
      * UnitsController constructor.
      *
@@ -41,8 +41,11 @@ class UnitsController extends Controller
      */
     public function index(Request $request)
     {
-        $data['items'] = $this->repository->getIndex($this->repository->getFilters(), $request)->orderBy('id','desc')->paginate(15);
+
+        $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request)->orderBy('id','desc')->paginate(15);
         $data['filters'] = $this->repository->getFilters();
+        $data['modules'] = $this->repository->getModules();
+        $data['listColumns'] = $this->repository->getListColumns();
         if (request()->wantsJson()) {
             return response()->json([
                 'data' => $data['units'],
@@ -162,7 +165,6 @@ class UnitsController extends Controller
      */
     public function destroy($id)
     {
-$this->repository->
         $deleted = $this->repository->delete($id);
         if (request()->wantsJson()) {
 

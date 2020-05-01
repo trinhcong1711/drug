@@ -12,9 +12,11 @@ use App\Models\Unit;
  */
 class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitRepository
 {
+
     protected $modules = [
         'slug' => 'unit'
     ];
+//  Danh sách các fields của bộ lọc trong view list
     protected $filters = [
         'name' => [
             'label' => 'Tên vị trí',
@@ -39,14 +41,26 @@ class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitR
             'query' => '='
         ],
     ];
-    public function modules()
+//  Danh sách các cột trong view list
+    protected $listColumns = [
+        ['name' => 'name','label'=>'Tên','type'=>'col'],
+        ['name' => 'note','label'=>'Chú thích', 'type'=>'col']
+    ];
+
+    public function getListColumns()
+    {
+        return $this->listColumns;
+    }
+    public function getModules()
     {
         return $this->modules;
     }
+
     public function getFilters()
     {
         return $this->filters;
     }
+
     public function model()
     {
         return Unit::class;
