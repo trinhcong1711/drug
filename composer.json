@@ -15,7 +15,8 @@
         "laravelcollective/html": "^5.8.0",
         "nwidart/laravel-modules": "^7.1",
         "prettus/l5-repository": "^2.6",
-        "spatie/laravel-permission": "^3.11"
+        "spatie/laravel-permission": "^3.11",
+        "yajra/laravel-datatables-oracle": "^9.10"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -180,6 +180,9 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
 
+//      Datatable
+        Yajra\Datatables\DatatablesServiceProvider::class,
+
     ],
 
     /*
@@ -236,6 +239,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
 
         'Html' => Collective\Html\HtmlFacade::class,
+//       Datatable
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
     ],
 
 ];

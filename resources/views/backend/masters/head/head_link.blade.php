@@ -1,3 +1,4 @@
+@yield('head_link')
 <!--begin::Global Theme Styles -->
 <link href="{{asset('metronic/assets/vendors/base/vendors.bundle.css')}}" rel="stylesheet" type="text/css"/>
 

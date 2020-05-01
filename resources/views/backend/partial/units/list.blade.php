@@ -1,4 +1,7 @@
 @extends('backend.masters.master')
+@section('head_link')
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+@endsection
 @section('main')
     <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
@@ -49,7 +52,6 @@
                             <form action="" method="get" id="form-search"
                                   style="{{ empty($_GET) ? 'display:none;' : ''}}">
                                 <div class="m-form__group row">
-
                                     {{--begin: Bộ lọc--}}
                                     @if(isset($filters))
                                         @foreach($filters as $name=>$filter)
@@ -79,7 +81,7 @@
                                         <thead>
                                         <tr class="m-stack__item--fluid">
                                             <th class="d-primary-row"  onclick="sortTable({{0}})">
-                                                <label class="m-checkbox m-checkbox--solid">
+                                                <label class="m-checkbox m-checkbox--solid" style="display: inline">
                                                     <input type="checkbox" class="ids_master"><span></span>
                                                 </label>#
                                             </th>
@@ -143,11 +145,10 @@
             </div>
         </div>
     </div>
-
-
-
 @endsection
 @section('script_footer')
+    {{--DataTables--}}
+    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script>
         function multiDestroy() {
             var ids = [];
@@ -184,4 +185,5 @@
             });
         })
     </script>
+
 @endsection
