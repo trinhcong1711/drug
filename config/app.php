@@ -182,7 +182,8 @@ return [
 
 //      Datatable
         Yajra\Datatables\DatatablesServiceProvider::class,
-
+//        Import/ Export Excel
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -241,6 +242,9 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 //       Datatable
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+
+//        Import/ Export Excel
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

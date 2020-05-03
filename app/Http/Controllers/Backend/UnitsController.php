@@ -9,6 +9,9 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Units\UnitCreateRequest;
 use App\Http\Requests\Units\UnitUpdateRequest;
 use App\Repositories\Units\UnitRepositoryEloquent;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UnitsExport;
+use App\Imports\UnitsImport;
 
 /**
  * Class UnitsController.
@@ -186,5 +189,16 @@ class UnitsController extends Controller
             ]);
         }
         return redirect()->back()->with('success', 'Xóa thành công!');
+    }
+
+    public function postExport()
+    {
+        return Excel::download(new UnitsExport, 'units.xlsx');
+    }
+    public function postImport(Request $request)
+    {
+
+        Excel::import(new UnitsImport,request()->file('unit-add-file'));
+        return back()->with('success','Thêm nhanh thành công!');
     }
 }

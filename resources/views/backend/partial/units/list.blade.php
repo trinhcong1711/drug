@@ -31,14 +31,19 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2" x-placement="bottom-start"
                                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                                <button class=" btn dropdown-item" type="button"><i
-                                        class="la la-download m--margin-right-10"></i>Xuất excel
-                                </button>
+                                <a href="{{route('unit.export')}}" class=" btn dropdown-item" type="button">
+                                    <i class="la la-download m--margin-right-10"></i>Xuất excel
+                                </a>
                                 <button class="btn dropdown-item multi_destroy" onclick="multiDestroy();" type="button">
                                     <i class="la la-remove m--margin-right-10"></i>Xóa nhiều
                                 </button>
                             </div>
                         </div>
+                        <button type="button"
+                                class="btn btn-default btn-icon-sm dropdown-toggle btn-closed-rocket m--margin-right-10"
+                                id="toggle-add-rocket">
+                            <i class="la la-rocket m--margin-right-10"></i>Thêm nhanh
+                        </button>
                         <a href="{{asset('admin/'.$modules['slug'].'/create')}}"
                            class="btn btn-primary btn-elevate btn-icon-sm">
                             <i class="la la-plus m--margin-right-10"></i> Tạo mới
@@ -73,6 +78,25 @@
                                 </div>
                             </form>
                             <!--end: Search Form -->
+                            <!--begin: import data from excel to DB Form -->
+                            <form action="{{asset('admin/'.$modules['slug'].'/import')}}" method="post" id="form-add-rocket" enctype="multipart/form-data">
+                                @csrf
+                                <div class="m-form__group row ">
+                                    <div class="col-md-6 text-right mb-2">
+                                    </div>
+                                    <div class="col-md-6 text-right mb-2">
+                                        <div class="custom-file">
+{{--                                            <input type="file" name="file" class="form-control">--}}
+                                            <input type="file" class="custom-file-input" name="unit-add-file"/>
+                                            <label class="custom-file-label" for="customFile">Chọn file .xlsx</label>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary m--margin-top-10">
+                                            <i class="la la-check m--margin-right-10"></i>Lưu
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!--end: import data from excel to DB Form -->
 
                             <!--begin: List Product -->
                             <div class="row">
@@ -179,6 +203,9 @@
         $(document).ready(function () {
             $('#toggle-search').click(function () {
                 $('#form-search').slideToggle(500);
+            });
+            $('#toggle-add-rocket').click(function () {
+                $('#form-add-rocket').slideToggle(500);
             });
             $('.ids_master').click(function () {
                 $('table tbody tr th label input[type=checkbox]').trigger('click');
