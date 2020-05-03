@@ -13,12 +13,20 @@ use Prettus\Repository\Exceptions\RepositoryException;
  */
 class CURDBaseRepositoryEloquent extends BaseRepository implements CURDBaseRepository
 {
-    public function getIndex($filters, $request)
+    /**
+     * @param $filters : array dạng mảng 2 chiều chứa các thuộc tính của ô input muốn tìm kiếm.
+     * @param $request
+     * @param $column = Null : string tên cột muốn sắp xếp
+     * @param $sort = Null :string dạng sắp xếp; 'desc' hay 'asc',...
+     * @param $paginate = Null : int số bản ghi trong 1 page
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function getIndex($filters, $request, $column = Null, $sort = Null, $paginate = Null)
     {
-        return $this->filtersField($filters, $request);
+        return $this->filtersField($filters, $request, !is_null($column) ? $column : 'id', !is_null($sort) ? $sort : 'desc', !is_null($paginate) ? $paginate : 15);
     }
 
-    public function filtersField($filters, $request)
+    public function filtersField($filters, $request, $column, $sort, $paginate)
     {
         $query = $this->makeModel()->where(function ($query) use ($filters, $request) {
             foreach ($filters as $name => $filter) {
@@ -28,12 +36,11 @@ class CURDBaseRepositoryEloquent extends BaseRepository implements CURDBaseRepos
                     } elseif ($filter['query'] == 'custom') {
                         $this->filterCustom($query);
                     } else {
-                        $query->where($name,$filter['query'], $request[$name]);
+                        $query->where($name, $filter['query'], $request[$name]);
                     }
                 }
-
             }
-        });
+        })->orderBy($column, $sort)->paginate($paginate);
         return $query;
     }
 

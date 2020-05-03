@@ -41,8 +41,7 @@ class UnitsController extends Controller
      */
     public function index(Request $request)
     {
-
-        $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request)->orderBy('id','desc')->paginate(15);
+        $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request,'id','desc',10);
         $data['filters'] = $this->repository->getFilters();
         $data['modules'] = $this->repository->getModules();
         $data['listColumns'] = $this->repository->getListColumns();
@@ -166,13 +165,6 @@ class UnitsController extends Controller
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'success' => 'Xóa thành công!',
-                'deleted' => $deleted,
-            ]);
-        }
         return redirect()->back()->with('success', 'Xóa thành công!');
     }
 

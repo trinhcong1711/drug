@@ -31,15 +31,6 @@ class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitR
             'type' => 'text',
             'query' => 'like'
         ],
-        'select' => [
-            'label' => 'Select',
-            'input' => 'select',
-            'option' => [
-                0 => 'Tắt',
-                1 => 'Bật',
-            ],
-            'query' => '='
-        ],
     ];
 //  Danh sách các cột trong view list
     protected $listColumns = [

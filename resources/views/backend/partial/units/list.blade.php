@@ -1,6 +1,6 @@
 @extends('backend.masters.master')
 @section('head_link')
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+{{--    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">--}}
 @endsection
 @section('main')
     <div class="m-grid__item m-grid__item--fluid m-wrapper">
@@ -49,7 +49,7 @@
                     <div class="row">
                         <div class="col-12">
                             <!--begin: Search Form -->
-                            <form action="" method="get" id="form-search"
+                            <form action="{{asset('admin/'.$modules['slug'])}}" method="get" id="form-search"
                                   style="{{ empty($_GET) ? 'display:none;' : ''}}">
                                 <div class="m-form__group row">
                                     {{--begin: Bộ lọc--}}
@@ -147,8 +147,8 @@
     </div>
 @endsection
 @section('script_footer')
-    {{--DataTables--}}
-    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+{{--    --}}{{--DataTables--}}
+{{--    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>--}}
     <script>
         function multiDestroy() {
             var ids = [];
@@ -185,5 +185,4 @@
             });
         })
     </script>
-
 @endsection

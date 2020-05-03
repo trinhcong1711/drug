@@ -30,6 +30,6 @@ interface CURDBaseRepository extends RepositoryInterface
      * @param $request
      * @return string
      */
-    public function filtersField($filters, $request);
+    public function filtersField($filters, $request, $column, $sort, $paginate);
     public function filterCustom($query);
 }
