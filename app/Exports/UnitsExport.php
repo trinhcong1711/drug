@@ -6,7 +6,7 @@ use App\Models\Unit;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class UnitsExport implements FromCollection, WithHeadings
+class UnitsExport  implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Exception;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Units\UnitCreateRequest;
 use App\Http\Requests\Units\UnitUpdateRequest;
@@ -25,6 +26,7 @@ class UnitsController extends Controller
      * @var UnitRepositoryEloquent
      */
     protected $repository;
+
     /**
      * UnitsController constructor.
      *
@@ -44,7 +46,7 @@ class UnitsController extends Controller
      */
     public function index(Request $request)
     {
-        $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request,'id','desc',10);
+        $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request, 'id', 'desc', 10);
         $data['filters'] = $this->repository->getFilters();
         $data['modules'] = $this->repository->getModules();
         $data['listColumns'] = $this->repository->getListColumns();
@@ -191,14 +193,19 @@ class UnitsController extends Controller
         return redirect()->back()->with('success', 'Xóa thành công!');
     }
 
-    public function postExport()
+    public function getExport()
     {
-        return Excel::download(new UnitsExport, 'units.xlsx');
+        return Excel::download(new UnitsExport, $this->repository->getModules()['slug'] . '.xlsx');
     }
+
     public function postImport(Request $request)
     {
+        try {
+            Excel::import(new UnitsImport, request()->file('import-file'), 's3',\Maatwebsite\Excel\Excel::XLSX);
 
-        Excel::import(new UnitsImport,request()->file('unit-add-file'));
-        return back()->with('success','Thêm nhanh thành công!');
+        } catch (Exception $e) {
+            return back()->with('error', 'Thất bại! Xem lại đã đúng định dạng file chưa!');
+        }
+        return back()->with('success', 'Thêm dữ liệu thành công!');
     }
 }

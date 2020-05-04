@@ -32,4 +32,5 @@ interface CURDBaseRepository extends RepositoryInterface
      */
     public function filtersField($filters, $request, $column, $sort, $paginate);
     public function filterCustom($query);
+    public function getIndex($filters, $request, $column = Null, $sort = Null, $paginate = Null);
 }

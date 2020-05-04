@@ -79,17 +79,19 @@
                             </form>
                             <!--end: Search Form -->
                             <!--begin: import data from excel to DB Form -->
-                            <form action="{{asset('admin/'.$modules['slug'].'/import')}}" method="post" id="form-add-rocket" enctype="multipart/form-data">
+                            <form action="{{asset('admin/'.$modules['slug'].'/import')}}" method="post" id="form-add-rocket" enctype="multipart/form-data" style="{{!session('error')?'display:none;':''}}">
                                 @csrf
                                 <div class="m-form__group row ">
                                     <div class="col-md-6 text-right mb-2">
                                     </div>
                                     <div class="col-md-6 text-right mb-2">
                                         <div class="custom-file">
-{{--                                            <input type="file" name="file" class="form-control">--}}
-                                            <input type="file" class="custom-file-input" name="unit-add-file"/>
-                                            <label class="custom-file-label" for="customFile">Chọn file .xlsx</label>
+                                            <input type="file" class="custom-file-input" name="import-file"/>
+                                            <label class="custom-file-label" for="customFile">Chọn file có dạng .xlsx. VD: ten_file.xlsx</label>
+
+                                            <span class="text-danger">{{ @$errors->first('import-file') }}</span>
                                         </div>
+
                                         <button type="submit" class="btn btn-primary m--margin-top-10">
                                             <i class="la la-check m--margin-right-10"></i>Lưu
                                         </button>
@@ -203,9 +205,11 @@
         $(document).ready(function () {
             $('#toggle-search').click(function () {
                 $('#form-search').slideToggle(500);
+                $('#form-add-rocket').slideUp(500);
             });
             $('#toggle-add-rocket').click(function () {
                 $('#form-add-rocket').slideToggle(500);
+                $('#form-search').slideUp(500);
             });
             $('.ids_master').click(function () {
                 $('table tbody tr th label input[type=checkbox]').trigger('click');
