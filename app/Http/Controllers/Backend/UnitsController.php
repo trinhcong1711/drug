@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\UnitsExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -10,8 +11,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Units\UnitCreateRequest;
 use App\Http\Requests\Units\UnitUpdateRequest;
 use App\Repositories\Units\UnitRepositoryEloquent;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\UnitsExport;
 use App\Imports\UnitsImport;
 
 /**
@@ -195,17 +194,24 @@ class UnitsController extends Controller
 
     public function getExport()
     {
-        return Excel::download(new UnitsExport, $this->repository->getModules()['slug'] . '.xlsx');
+        try {
+            return $this->repository->getExportXLSX($this->repository->getListColumns(),$this->repository->getModules()['slug'],$this->repository->makeModel(), UnitsExport::class);
+        } catch (Exception $e) {
+            return back()->with('error', 'Thất bại! Có lỗi xảy ra!');
+        }
+    }
+    public function getExportDefault()
+    {
+       return $this->repository->getExport($this->repository->getListColumns(),$this->repository->getModules()['slug'],$this->repository->makeModel());
     }
 
     public function postImport(Request $request)
     {
         try {
-            Excel::import(new UnitsImport, request()->file('import-file'), 's3',\Maatwebsite\Excel\Excel::XLSX);
-
+            return $this->repository->getImportXLSX($request,'importFile', UnitsImport::class);
         } catch (Exception $e) {
-            return back()->with('error', 'Thất bại! Xem lại đã đúng định dạng file chưa!');
+            return back()->with('error', 'Thất bại! Có lỗi xảy ra! Liên hệ tới kỹ thuật viên!');
         }
-        return back()->with('success', 'Thêm dữ liệu thành công!');
+
     }
 }

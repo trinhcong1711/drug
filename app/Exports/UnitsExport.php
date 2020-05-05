@@ -2,24 +2,18 @@
 
 namespace App\Exports;
 
-use App\Models\Unit;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromArray;
 
-class UnitsExport  implements FromCollection, WithHeadings
+class UnitsExport  implements FromArray
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    protected $export;
+
+    public function __construct(array $export)
     {
-        return Unit::select('name', 'note')->get();
+        $this->export = $export;
     }
-    public function headings(): array
+    public function array(): array
     {
-        return [
-            'Name',
-            'Note'
-        ];
+        return $this->export;
     }
 }

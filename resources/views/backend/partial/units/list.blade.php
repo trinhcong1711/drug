@@ -82,11 +82,18 @@
                             <form action="{{asset('admin/'.$modules['slug'].'/import')}}" method="post" id="form-add-rocket" enctype="multipart/form-data" style="{{!session('error')?'display:none;':''}}">
                                 @csrf
                                 <div class="m-form__group row ">
-                                    <div class="col-md-6 text-right mb-2">
+                                    <div class="col-md-7 text-right mb-2">
                                     </div>
-                                    <div class="col-md-6 text-right mb-2">
+                                    <div class="col-md-2 text-right mb-2">
+                                        <a href="{{route('unit.export_default')}}" title="Tải file mẫu"  class="btn btn-primary btn-elevate btn-icon-sm">
+                                            <i class="la la-download m--margin-right-10"></i>Tải file mẫu
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 text-right mb-2">
+
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="import-file"/>
+
+                                            <input type="file" class="custom-file-input" name="importFile"/>
                                             <label class="custom-file-label" for="customFile">Chọn file có dạng .xlsx. VD: ten_file.xlsx</label>
 
                                             <span class="text-danger">{{ @$errors->first('import-file') }}</span>
@@ -151,7 +158,7 @@
                                                 </th>
                                                 @if(isset($listColumns))
                                                     @foreach($listColumns as $listColumn)
-                                                        @include('backend.lists.cols.'.$listColumn['type'] )
+                                                        @include('backend.lists.cols.'.$listColumn['file'] )
                                                     @endforeach
                                                 @endif
                                             </tr>

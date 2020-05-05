@@ -34,8 +34,8 @@ class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitR
     ];
 //  Danh sách các cột trong view list
     protected $listColumns = [
-        ['name' => 'name','label'=>'Tên','type'=>'col'],
-        ['name' => 'note','label'=>'Chú thích', 'type'=>'col']
+        ['name' => 'name','label'=>'Tên','file'=>'col'],
+        ['name' => 'note','label'=>'Chú thích', 'file'=>'col']
     ];
 
     public function getListColumns()

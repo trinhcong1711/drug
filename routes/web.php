@@ -31,5 +31,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth'],'namespace' => 'Backe
     Route::get('unit/destroy/{id}','UnitsController@destroy')->name('unit.destroy');
     Route::get('unit/multi-destroy','UnitsController@multiDestroy')->name('unit.multi_destroy');
     Route::get('unit/export','UnitsController@getExport')->name('unit.export');
+    Route::get('unit/export-default','UnitsController@getExportDefault')->name('unit.export_default');
     Route::post('unit/import','UnitsController@postImport')->name('unit.import');
 });

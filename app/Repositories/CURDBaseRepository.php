@@ -11,26 +11,8 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CURDBaseRepository extends RepositoryInterface
 {
-    //List function of core
-    /**
-     * Hàm trả về
-     * @param $query
-     * @param $filters mảng 2 chiều
-     * VD : $filters = [
-     *                      'name' => [
-     *                              'type' => 'text',
-     *                              'query' => 'like'
-     *                            ],
-     *                          'note' => [
-     *                          'type' => 'text',
-     *                          'query' => 'like'
-     *                      ],
-     *
-     *                  ];
-     * @param $request
-     * @return string
-     */
     public function filtersField($filters, $request, $column, $sort, $paginate);
-    public function filterCustom($query);
     public function getIndex($filters, $request, $column = Null, $sort = Null, $paginate = Null);
+    public function getExportXLSX($columns,$fileName,$makeModel,$exportFacade);
+    public function getImportXLSX($request,$inputName, $importFacade);
 }
