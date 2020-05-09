@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\DefaultExport;
 use App\Exports\UnitsExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -204,20 +205,20 @@ class UnitsController extends Controller
     public function getExport()
     {
         try {
-            return  Excel::download(new UnitsExport, $this->repository->getModules()['slug'].'.xlsx');
+            return  Excel::download(new UnitsExport($this->repository->getExcels()[0],$this->repository->getExcels()[1]), $this->repository->getModules()['slug'].'.xlsx');
         } catch (Exception $e) {
             return back()->with('error', 'Thất bại! Có lỗi xảy ra!');
         }
     }
     public function getExportDefault()
     {
-//       return $this->repository->getExport($this->repository->getListColumns(),$this->repository->getModules()['slug'],$this->repository->makeModel());
+        return  Excel::download(new DefaultExport($this->repository->getExcels()), $this->repository->getModules()['slug'].'.xlsx');
     }
 
     public function postImport()
     {
         try {
-        Excel::import(new UnitsImport, request()->file('importFile'), 's3',\Maatwebsite\Excel\Excel::XLSX);
+        Excel::import(new UnitsImport($this->repository->getExcels()[0],$this->repository->getExcels()[1]), request()->file('importFile'), 's3',\Maatwebsite\Excel\Excel::XLSX);
         return redirect()->back()->with('success','Thêm nhanh thành công!');
         } catch (Exception $e) {
             return back()->with('error', 'Thất bại! Có lỗi xảy ra! Liên hệ tới kỹ thuật viên!');

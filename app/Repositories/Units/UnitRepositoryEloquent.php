@@ -32,6 +32,11 @@ class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitR
             'query' => 'like'
         ],
     ];
+//    Danh sách các cột import, export
+    protected $excels = [
+        ['name', 'note'],
+        ['Tên', 'Ghi chú']
+    ];
 //  Danh sách các cột trong view list
     protected $listColumns = [
         ['name' => 'name','label'=>'Tên','file'=>'col'],
@@ -50,6 +55,10 @@ class UnitRepositoryEloquent extends CURDBaseRepositoryEloquent implements UnitR
     public function getFilters()
     {
         return $this->filters;
+    }
+    public function getExcels()
+    {
+        return $this->excels;
     }
 
     public function model()
