@@ -1,6 +1,9 @@
+<?php
+$nums = [15, 30, 50, 100]
+?>
 @extends('backend.masters.master')
 @section('head_link')
-{{--    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">--}}
+    {{--    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">--}}
 @endsection
 @section('main')
     <div class="m-grid__item m-grid__item--fluid m-wrapper">
@@ -55,7 +58,7 @@
                         <div class="col-12">
                             <!--begin: Search Form -->
                             <form action="{{asset('admin/'.$modules['slug'])}}" method="get" id="form-search"
-                                  style="{{ empty($_GET) ? 'display:none;' : ''}}">
+                                  style="{{ empty($_GET)|| isset($_GET['row_numbers']) ? 'display:none;' : ''}}">
                                 <div class="m-form__group row">
                                     {{--begin: Bộ lọc--}}
                                     @if(isset($filters))
@@ -79,27 +82,24 @@
                             </form>
                             <!--end: Search Form -->
                             <!--begin: import data from excel to DB Form -->
-                            <form action="{{asset('admin/'.$modules['slug'].'/import')}}" method="post" id="form-add-rocket" enctype="multipart/form-data" style="{{!session('error')?'display:none;':''}}">
+                            <form action="{{asset('admin/'.$modules['slug'].'/import')}}" method="post"
+                                  id="form-add-rocket" enctype="multipart/form-data"
+                                  style="{{!session('error')?'display:none;':''}}">
                                 @csrf
                                 <div class="m-form__group row ">
-                                    <div class="col-md-7 text-right mb-2">
-                                    </div>
-                                    <div class="col-md-2 text-right mb-2">
-                                        <a href="{{route('unit.export_default')}}" title="Tải file mẫu"  class="btn btn-primary btn-elevate btn-icon-sm">
+
+                                    <div class="col-md-12 text-right mb-2">
+                                        <a href="{{route('unit.export_default')}}" title="Tải file mẫu"
+                                           class="btn btn-success btn-elevate btn-icon-sm border-0">
                                             <i class="la la-download m--margin-right-10"></i>Tải file mẫu
                                         </a>
-                                    </div>
-                                    <div class="col-md-3 text-right mb-2">
-
-                                        <div class="custom-file">
-
+                                        <div class="custom-file w-50 btn">
                                             <input type="file" class="custom-file-input" name="importFile"/>
-                                            <label class="custom-file-label" for="customFile">Chọn file có dạng .xlsx. VD: ten_file.xlsx</label>
-
-                                            <span class="text-danger">{{ @$errors->first('import-file') }}</span>
+                                            <label class="custom-file-label" for="customFile">Chọn file có dạng .xlsx.
+                                                VD: ten_file.xlsx</label>
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary m--margin-top-10">
+                                        <button type="submit" class="btn btn-primary border-0">
                                             <i class="la la-check m--margin-right-10"></i>Lưu
                                         </button>
                                     </div>
@@ -110,10 +110,12 @@
                             <!--begin: List Product -->
                             <div class="row">
                                 <div class="table-responsive">
-                                    <table class="table m-table m-table--head-separator-primary text-dark table-hover d-table-list" id="d-table-list">
+                                    <table
+                                        class="table m-table m-table--head-separator-primary text-dark table-hover d-table-list"
+                                        id="d-table-list">
                                         <thead>
                                         <tr class="m-stack__item--fluid">
-                                            <th class="d-primary-row"  onclick="sortTable({{0}})">
+                                            <th class="d-primary-row" onclick="sortTable({{0}})">
                                                 <label class="m-checkbox m-checkbox--solid" style="display: inline">
                                                     <input type="checkbox" class="ids_master"><span></span>
                                                 </label>#
@@ -122,9 +124,9 @@
 
                                             @if(isset($listColumns))
                                                 @foreach($listColumns as $r=>$listColumn)
-                                                    <th onclick="sortTable({{$r+1}})"
-                                                        class="{{ $listColumn['name'] }} d-primary-row {{ @$listColumn['class'] }}">{{ $listColumn['label'] }}
-                                                        <i class="la la-arrow-down fa-1x"></i></th>
+                                                    <th onclick="sortTable({{$r+1}})" class="{{ $listColumn['name'] }}  d-primary-row {{ @$listColumn['class'] }}">{{ $listColumn['label'] }}
+                                                        <i class="la la-arrow-down fa-1x"></i>
+                                                    </th>
                                                 @endforeach
                                             @endif
                                         </tr>
@@ -166,11 +168,43 @@
 
                                         </tbody>
                                     </table>
-
-                                    {{$listItems->render()}}
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{$listItems->render()}}
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <div class="btn-group m--margin-right-10">
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle choose-number"
+                                                type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            {{isset($_GET['number']) ? $_GET['number'] : $listItems->total() < min($nums) ? 'Tất cả' : 15}}
+                                        </button>
 
+                                        @if($listItems->total()>min($nums))
+                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+
+                                                @foreach($nums as $num)
+                                                    @if($num<$listItems->total())
+                                                        <a class="dropdown-item d-choose-number-show btn"
+                                                           href="{{route('unit.index').'?row_numbers='.$num}}">{{$num}}</a>
+                                                    @endif
+                                                @endforeach
+
+                                                <a class="dropdown-item d-choose-number-show btn"
+                                                   href="{{route('unit.index').'?row_numbers='.$listItems->total()}}">Tất
+                                                    cả</a>
+
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <span
+                                        class="m-datatable__pager-detail">Hiển thị 1 - {{isset($_GET['row_numbers'])?$_GET['row_numbers']:15}} của {{$listItems->total()}}</span>
+                                </div>
+
+                            </div>
                             <!--end: List Product -->
                         </div>
                     </div>
@@ -180,8 +214,8 @@
     </div>
 @endsection
 @section('script_footer')
-{{--    --}}{{--DataTables--}}
-{{--    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>--}}
+    {{--    --}}{{--DataTables--}}
+    {{--    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>--}}
     <script>
         function multiDestroy() {
             var ids = [];
@@ -221,6 +255,17 @@
             $('.ids_master').click(function () {
                 $('table tbody tr th label input[type=checkbox]').trigger('click');
             });
+            {{--$('.d-choose-number-show').click(function () {--}}
+            {{--    var number = $(this).data('number-row');--}}
+            {{--    $('.choose-number').text(number);--}}
+            {{--    $.ajax({--}}
+            {{--        url: '{{route("unit.index")}}',--}}
+            {{--        method: 'get',--}}
+            {{--        data: {number: number},--}}
+            {{--        success: function () {--}}
+            {{--        }--}}
+            {{--    })--}}
+            {{--});--}}
         })
     </script>
 @endsection

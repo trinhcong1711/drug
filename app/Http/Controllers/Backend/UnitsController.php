@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Exception;
+use Maatwebsite\Excel\Facades\Excel;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\Units\UnitCreateRequest;
 use App\Http\Requests\Units\UnitUpdateRequest;
@@ -45,10 +46,20 @@ class UnitsController extends Controller
      */
     public function index(Request $request)
     {
-        $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request, 'id', 'desc', 10);
+/*
+ * Lấy dữ liệu cần thiết
+ * */
         $data['filters'] = $this->repository->getFilters();
         $data['modules'] = $this->repository->getModules();
         $data['listColumns'] = $this->repository->getListColumns();
+
+        if($request->has('row_numbers')){
+//            Tùy chọn số bản ghi hiển thị
+            $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request, 'id', 'desc', $request->row_numbers);
+        }else{
+            $data['listItems'] = $this->repository->getIndex($this->repository->getFilters(), $request, 'id', 'desc', 15);
+        }
+
         if (request()->wantsJson()) {
             return response()->json([
                 'data' => $data['units'],
@@ -87,7 +98,7 @@ class UnitsController extends Controller
             if ($request->return_redirect == 'save_new') {
                 return back()->with('success', $response['success']);
             }
-            return redirect('/admin/' . $this->modules['slug'])->with('success', $response['success']);
+            return redirect('/admin/' . $this->repository->getModules()['slug'])->with('success', $response['success']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -130,18 +141,16 @@ class UnitsController extends Controller
         try {
 
             $unit = $this->repository->update($request->except('return_redirect'), $id);
-
             $response = [
                 'success' => 'Cập nhật vị trí thành công!',
                 'data' => $unit->toArray(),
             ];
 
             if ($request->wantsJson()) {
-
                 return response()->json($response);
             }
             if ($request->return_redirect == 'save_back') {
-                return redirect('/admin/' . $this->modules['slug'])->with('success', $response['success']);
+                return redirect('/admin/' . $this->repository->getModules()['slug'])->with('success', $response['success']);
             }
             return back()->with('success', $response['success']);
         } catch (ValidatorException $e) {
@@ -168,7 +177,7 @@ class UnitsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
+        $this->repository->delete($id);
         return redirect()->back()->with('success', 'Xóa thành công!');
     }
 
@@ -195,20 +204,21 @@ class UnitsController extends Controller
     public function getExport()
     {
         try {
-            return $this->repository->getExportXLSX($this->repository->getListColumns(),$this->repository->getModules()['slug'],$this->repository->makeModel(), UnitsExport::class);
+            return  Excel::download(new UnitsExport, $this->repository->getModules()['slug'].'.xlsx');
         } catch (Exception $e) {
             return back()->with('error', 'Thất bại! Có lỗi xảy ra!');
         }
     }
     public function getExportDefault()
     {
-       return $this->repository->getExport($this->repository->getListColumns(),$this->repository->getModules()['slug'],$this->repository->makeModel());
+//       return $this->repository->getExport($this->repository->getListColumns(),$this->repository->getModules()['slug'],$this->repository->makeModel());
     }
 
-    public function postImport(Request $request)
+    public function postImport()
     {
         try {
-            return $this->repository->getImportXLSX($request,'importFile', UnitsImport::class);
+        Excel::import(new UnitsImport, request()->file('importFile'), 's3',\Maatwebsite\Excel\Excel::XLSX);
+        return redirect()->back()->with('success','Thêm nhanh thành công!');
         } catch (Exception $e) {
             return back()->with('error', 'Thất bại! Có lỗi xảy ra! Liên hệ tới kỹ thuật viên!');
         }

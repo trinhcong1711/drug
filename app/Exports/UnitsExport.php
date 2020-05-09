@@ -2,18 +2,18 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromArray;
+use App\Models\Unit;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class UnitsExport  implements FromArray
+class UnitsExport  implements FromCollection, WithHeadings
 {
-    protected $export;
-
-    public function __construct(array $export)
+    public function collection()
     {
-        $this->export = $export;
+        return Unit::select('name','note')->get();
     }
-    public function array(): array
-    {
-        return $this->export;
+    //Thêm hàng tiêu đề cho bảng
+    public function headings() :array {
+        return ["Tên", "Ghi chú"];
     }
 }
